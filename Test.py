@@ -1,14 +1,15 @@
-import tkinter as tk
-from tkinter import ttk
 import pyquotegen
+from tkinter import *
 
-class App(tk.Tk):
+#quote = pyquotegen.get_quote()
+#print(quote)
+class App():
     def __init__(self):
         super().__init__()
-        self.geometry("1000x300")
-        self.title('Quote generation')
+        self.geometry("320x80")
+        self.title("Quote generator")
 
-        # initialize data
+        #Initialize data
         self.quote_category = [
             'motivational',
             'inspirational',
@@ -19,40 +20,35 @@ class App(tk.Tk):
             'attitude',
             'coding'
         ]
+        self.quote = StringVar(self)
 
-        # set up variable
-        self.option_var = tk.StringVar(self)
+        self.create_widgets()
+    
+    def create_widgets(self):
+        #padding
+        paddings = {'padx' : 5, 'paddy' : 5}
 
-        # create widget
-        self.create_wigets()
+        #label
+        label = Tk.Label(self, text = "Select quote category:")
+        label.grid(column = 0, row = 0, sticky=W, **paddings)
 
-    def create_wigets(self):
-        # padding for widgets using the grid layout
-        paddings = {'padx': 5, 'pady': 5}
-
-        # label
-        label = ttk.Label(self,  text='Select your Category:')
-        label.grid(column=0, row=0, sticky=tk.W, **paddings)
-
-        # option menu
-        option_menu = ttk.OptionMenu(
+        option_menu = OptionMenu(
             self,
-            self.option_var,
+            self.quote,
             self.quote_category[0],
-            *self.quote_category,
             command=self.option_changed)
         
-        option_menu.grid(column=1, row=0, sticky=tk.W, **paddings)
+        option_menu.grid(column=1,row=0,sticky=W, **paddings)
 
-        #Output
-        self.output_label = ttk.Label(self, foreground='black')
-        self.output_label.grid(column=1, row=1, sticky=tk.W, **paddings)
+        self.output_label = Tk.Label(self, foreground='black')
+        self.output_label.grid(column=0,row=1, sticky=W, **paddings)
 
-    def option_changed(self, selected_category):
-        quote = pyquotegen.get_quote(selected_category)
-        self.output_label['text'] = f'Quote: {quote}'
-
+        def option_changed(self, *args):
+            self.output_label['text'] = f'You have selected :{self.option_var.get()}'
+    
 
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+        #quote_category = pyquotegen.get_quote()
+        #print(quote_category)
